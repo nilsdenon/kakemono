@@ -1,8 +1,7 @@
 import Image from "next/image";
 import { Posts } from "./queries/posts";
 import { Card } from "@/components/Card";
-import { getClient } from "@/lib/client";
-import { gql } from "@apollo/client";
+
 import {
   ReactElement,
   JSXElementConstructor,
@@ -14,80 +13,80 @@ import Link from "next/link";
 
 const API_URL = process.env.WORDPRESS_API_URL as string;
 
-const query = gql`
-  query getPosts {
-    posts {
-      edges {
-        node {
-          title
-          excerpt
-          slug
-          date
-          featuredImage {
+// const query = gql`
+//   query getPosts {
+//     posts {
+//       edges {
+//         node {
+//           title
+//           excerpt
+//           slug
+//           date
+//           featuredImage {
+//             node {
+//               altText
+//               id
+//               slug
+//               sourceUrl(size: LARGE)
+//               mediaDetails {
+//                 width
+//                 height
+//               }
+//             }
+//           }
+//         }
+//       }
+//     }
+//   }
+// `;
+
+export default async function Home() {
+  const { data } = await fetch(API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      query: `query getPosts {
+        posts {
+          edges {
             node {
-              altText
-              id
+              title
+              excerpt
               slug
-              sourceUrl(size: LARGE)
-              mediaDetails {
-                width
-                height
+              date
+              featuredImage {
+                node {
+                  altText
+                  id
+                  slug
+                  sourceUrl(size: LARGE)
+                  mediaDetails {
+                    width
+                    height
+                  }
+                }
               }
             }
           }
         }
-      }
-    }
-  }
-`;
-
-export default async function Home() {
-  // const { data } = await fetch(API_URL, {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify({
-  //     query: `query getPosts {
-  //       posts {
-  //         edges {
-  //           node {
-  //             title
-  //             excerpt
-  //             slug
-  //             date
-  //             featuredImage {
-  //               node {
-  //                 altText
-  //                 id
-  //                 slug
-  //                 sourceUrl(size: LARGE)
-  //                 mediaDetails {
-  //                   width
-  //                   height
-  //                 }
-  //               }
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }`,
-  //   }),
-  //   next: { revalidate: 10 },
-  // }).then((res) => res.json());
+      }`,
+    }),
+    next: { revalidate: 10 },
+  }).then((res) => res.json());
 
   //console.log(data?.posts?.edges?.map(((post: { node: { title: any; }; }) => post.node.title)));
 
-  const { data } = await getClient().query({
-    query,
-    context: {
-      fetchOptions: {
-        next: { revalidate: 5 },
-      },
-    },
-  });
+  // const { data } = await getClient().query({
+  //   query,
+  //   context: {
+  //     fetchOptions: {
+  //       next: { revalidate: 5 },
+  //     },
+  //   },
+  // });
 
-  console.log();
+  // console.log();
 
   const posts = data.posts.edges;
 
