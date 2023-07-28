@@ -1,116 +1,37 @@
-import Image from "next/image";
-import { Posts } from "./queries/posts";
 import { Card } from "@/components/Card";
+import { fetchClient, photoClient } from "@/lib/client";
+import { wordpressClient } from "@/lib/wordpressClient";
 
-import {
-  ReactElement,
-  JSXElementConstructor,
-  ReactNode,
-  ReactPortal,
-  PromiseLikeOfReactNode,
-} from "react";
-import Link from "next/link";
-
-const API_URL = process.env.WORDPRESS_API_URL as string;
-
-// const query = gql`
-//   query getPosts {
-//     posts {
-//       edges {
-//         node {
-//           title
-//           excerpt
-//           slug
-//           date
-//           featuredImage {
-//             node {
-//               altText
-//               id
-//               slug
-//               sourceUrl(size: LARGE)
-//               mediaDetails {
-//                 width
-//                 height
-//               }
-//             }
-//           }
-//         }
-//       }
-//     }
-//   }
-// `;
+import { fetchAPI } from "./api/client";
+import { getRecentPosts } from "@/queries/getRecentPosts";
+import { getAllPostsForHome } from "@/queries/getAllPostsForHome";
+import { getClient } from "@/lib/apolloClient";
+import { GET_POSTS as query } from "@/queries/getPosts";
 
 export default async function Home() {
-  const { data } = await fetch(API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      query: `query getPosts {
-        posts {
-          edges {
-            node {
-              title
-              excerpt
-              slug
-              date
-              featuredImage {
-                node {
-                  altText
-                  id
-                  slug
-                  sourceUrl(size: LARGE)
-                  mediaDetails {
-                    width
-                    height
-                  }
-                }
-              }
-            }
-          }
-        }
-      }`,
-    }),
-    next: { revalidate: 10 },
-  }).then((res) => res.json());
-
-  //console.log(data?.posts?.edges?.map(((post: { node: { title: any; }; }) => post.node.title)));
-
-  // const { data } = await getClient().query({
-  //   query,
-  //   context: {
-  //     fetchOptions: {
-  //       next: { revalidate: 5 },
-  //     },
+  // const { data } = await fetch(String(process.env.WP_API_URL), {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
   //   },
-  // });
-
-  // console.log();
-
-  const posts = data.posts.edges;
+  //   body: JSON.stringify({
+  //     query: getPosts,
+  //   }),
+  //   next: { revalidate: 10 },
+  // }).then((res) => res.json());
+  const client = getClient();
+  const { data } = await client.query({
+    query,
+    context: {
+      fetchOptions: {
+        next: { revalidate: 5 },
+      },
+    },
+  });
 
   return (
-    <>
-      <div>
-        {posts.map(
-          (post: {
-            node: {
-              slug: string;
-              title: string;
-            };
-          }) => {
-            return (
-              <p>
-                <Link href={`/photos/${post.node.slug}`}>
-                  {post.node.title}
-                </Link>
-              </p>
-            );
-          }
-        )}
-      </div>
-      {/* {data?.posts?.edges?.map(
+    <article className="w-full max-w-7xl grid grid-flow-row sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 relative gap-4">
+      {data?.posts?.edges?.map(
         (
           post: {
             node: {
@@ -135,7 +56,8 @@ export default async function Home() {
             height={post.node.featuredImage?.node.mediaDetails.height}
           />
         )
-      )} */}
-    </>
+      )}
+      <p>test</p>
+    </article>
   );
 }

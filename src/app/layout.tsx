@@ -18,13 +18,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <Nav />
         <main className="flex min-h-screen flex-col items-center justify-between p-4">
-          <div className="w-full max-w-7xl items-center justify-between font-mono text-sm">
-            <Nav />
-            <article className="grid grid-flow-row sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 relative gap-4">
-              {children}
-            </article>
-          </div>
+          {children}
         </main>
       </body>
     </html>

@@ -8,7 +8,7 @@ export default async function getPhoto(slug: string) {
     },
     body: JSON.stringify({
       query: `query getSinglePhoto($slug: ID!) {
-        post(id: ${slug}, idType: SLUG) {
+        post(id: $slug, idType: SLUG) {
           id
           title
           slug
@@ -32,6 +32,9 @@ export default async function getPhoto(slug: string) {
           }
         }
       }`,
+      variables: {
+        slug,
+      },
     }),
     next: { revalidate: 10 },
   }).then((res) => res.json());
