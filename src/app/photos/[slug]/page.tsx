@@ -28,32 +28,25 @@ export default async function PhotoPage({ params: { slug } }: Props) {
       {photo.title} */}
       </h1>
       <p>{data?.post.id}</p>
-      <ul>
+      <div className="grid grid-flow-dense gap-[30px] responsive-grid">
         {data.post.gallery?.photo.map((item: any, i: number) => {
+          const orientation =
+            item.mediaDetails.height < item.mediaDetails.width
+              ? "landscape"
+              : "portrait";
+
           return (
-            <li key={i} className="flex flex-col">
-              <h2 className="text-md">{item.title}</h2>
-              <figure>
-                {/* <Image
-                  height={item.mediaDetails.height}
-                  width={item.mediaDetails.width}
-                  src={item.mediaItemUrl}
-                  alt={item.altText}
-                  priority
-                  quality={95}
-                  placeholder="blur"
-                  blurDataURL={item.sourceUrl}
-                /> */}
-                <BlurImage
-                  height={item.mediaDetails.height}
-                  width={item.mediaDetails.width}
-                  src={item.mediaItemUrl}
-                />
-              </figure>
-            </li>
+            <BlurImage
+              key={i}
+              orientation={orientation}
+              title={item.title}
+              height={item.mediaDetails.height}
+              width={item.mediaDetails.width}
+              src={item.mediaItemUrl}
+            />
           );
         })}
-      </ul>
+      </div>
     </div>
   );
 }

@@ -7,17 +7,26 @@ type BlurImageProps = {
   src: string;
   width: number;
   height: number;
+  styles?: any;
+  title: string;
+  orientation: string;
 };
 
-export default function BlurImage({ src, width, height }: BlurImageProps) {
+export default function BlurImage({
+  src,
+  width,
+  height,
+  styles,
+  title,
+  orientation,
+}: BlurImageProps) {
   const [isLoading, setLoading] = useState(true);
 
   return (
-    <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-w-7 xl:aspect-h-8">
+    <figure className={orientation}>
       <Image
         alt=""
         src={src}
-        objectFit="cover"
         width={width}
         height={height}
         className={`
@@ -31,6 +40,6 @@ export default function BlurImage({ src, width, height }: BlurImageProps) {
         priority
         quality={95}
       />
-    </div>
+    </figure>
   );
 }

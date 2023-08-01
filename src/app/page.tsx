@@ -1,10 +1,5 @@
 import { Card } from "@/components/Card";
-import { fetchClient, photoClient } from "@/lib/client";
-import { wordpressClient } from "@/lib/wordpressClient";
 
-import { fetchAPI } from "./api/client";
-import { getRecentPosts } from "@/queries/getRecentPosts";
-import { getAllPostsForHome } from "@/queries/getAllPostsForHome";
 import { getClient } from "@/lib/apolloClient";
 import { GET_POSTS as query } from "@/queries/getPosts";
 

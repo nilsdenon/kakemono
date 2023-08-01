@@ -4,7 +4,7 @@ export default function PhotosLayout({
   children: React.ReactNode;
 }) {
   return (
-    <article className="w-full max-w-7xl grid grid-flow-row grid-cols-1 relative gap-4">
+    <article className="w-full grid grid-flow-row grid-cols-1 relative gap-[30px]">
       {children}
     </article>
   );

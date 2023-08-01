@@ -25,3 +25,20 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+@media (min-width: 901px) {
+  .portrait {
+    grid-row-end: span 1;
+  }
+}
+
+.landscape {
+  grid-column-end: span 2;
+}
+.responsive-grid {
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+}
+@media (max-width: 1031px) {
+  .responsive-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}

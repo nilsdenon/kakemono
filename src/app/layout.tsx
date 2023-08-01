@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Nav />
-        <main className="flex min-h-screen flex-col items-center justify-between p-4">
+        <main className="flex min-h-screen flex-col items-center justify-between p-[30px]">
           {children}
         </main>
       </body>
